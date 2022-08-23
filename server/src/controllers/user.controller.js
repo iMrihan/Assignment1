@@ -1,56 +1,86 @@
 const express = require("express");
-const User = require("../models/user.model");
+
 const router = express.Router();
 
-router.get("", async (req, res) => {
-	try {
-		const users = await User.find().lean().exec();
-		return res.status(200).send(users);
-	} catch (err) {
-		return res.status(500).send(err.message);
-	}
+const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
+
+const jwt = require("jsonwebtoken");
+const checkAuth = require("../middleware/check-auth");
+
+router.post("/signup", (req, res, next) => {
+  bcrypt.hash(req.body.password, 10, (err, hash) => {
+    if (err) {
+      return res.status(500).json({
+        error: err,
+      });
+    } else {
+      const user = new User({
+        password: hash,
+        email: req.body.email,
+      });
+      user
+        .save()
+        .then((result) => {
+          res.status(200).json({
+            new_user: result,
+          });
+        })
+        .catch((err) => {
+          res.status(500).json({
+            message: "Email already exist",
+            error: err,
+          });
+        });
+    }
+  });
 });
 
-router.get("/:id", async (req, res) => {
-	try {
-		const users = await User.findById(req.params.id).lean().exec();
-		return res.status(200).send(users);
-	} catch (err) {
-		return res.status(500).send(err.message);
-	}
-});
+router.post("/login", (req, res, next) => {
+  User.findOne({ email: req.body.email })
+    .exec()
+    .then((user) => {
+      if (user.length < 1) {
+        return res.status(401).json({
+          message: "user not exist",
+        });
+      }
 
-router.post("", async (req, res) => {
-	try {
-		const users = await User.create(req.body)
-		return res.status(200).send(users);
-	} catch (err) {
-		return res.status(500).send(err.message);
-	}
-});
+      console.log("userData", user);
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (!result) {
+          return res.status(401).json({
+            msg: "password matching fail",
+          });
+        }
+        if (result) {
+          console.log("test", user);
+          const token = jwt.sign(
+            {
+              email: user.email,
+              password: user.password,
+              userType: user.userType,
+            },
+            "this is dummy text",
+            {
+              expiresIn: "24h",
+            }
+          );
+          res.status(200).json({
+            email: user.email,
+            password: user.password,
+            userType: user.userType,
 
-router.patch("/:id", async (req, res) => {
-	try {
-		const users = await User.findByIdAndUpdate(req.params.id, req.body, {
-			new: true,
-		})
-			.lean()
-			.exec();
-
-		return res.status(200).send(users);
-	} catch (err) {
-		return res.status(500).send(err.message);
-	}
-});
-
-router.delete("/:id", async (req, res) => {
-	try {
-		const users = await User.findByIdAndDelete(req.params.id).lean().exec();
-
-		return res.status(200).send(users);
-	} catch (err) {
-		return res.status(500).send(err.message);
-	}
+            token: token,
+          });
+        }
+      });
+    })
+    .catch((err) => {
+      res.status(500).json({
+        err: err,
+      });
+    });
 });
 
 module.exports = router;
