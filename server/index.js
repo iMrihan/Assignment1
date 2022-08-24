@@ -2,23 +2,24 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 app.use(express.json());
-require("dotenv").config();
 app.use(cors());
-const connectDB = require("./src/config/db");
+require("dotenv").config();
 
-const userController = require("./src/controllers/user.controller");
-const postController = require("./src/controllers/post.controller");
-const postLikeController = require("./src/controllers/postLike.controller");
-const commentController = require("./src/controllers/comment.controller");
+const connectDB = require("./configs/db");
 
-app.get("/", async (req, res, next) => {
-  res.send({ message: "Awesome it works 🐻" });
-});
+const userController = require("./controllers/user.controller");
+const masterAccountController = require("./controllers/masterAccount.controller");
+const savingAccountController = require("./controllers/savingAccount.controller");
+const fixedAccountController = require("./controllers/fixedAccount.controller");
+const branchDetailController = require("./controllers/branchDetail.controller");
+const productController = require("./controllers/product.controller");
 
-app.use("/users", userController);
-app.use("/posts", postController);
-app.use("/postLikes", postLikeController);
-app.use("/comments", commentController);
+app.use("api/users", userController);
+app.use("/api", productController);
+app.use("/branchDetails", branchDetailController);
+app.use("/savingAccounts", savingAccountController);
+app.use("/fixedAccounts", fixedAccountController);
+app.use("/masterAccounts", masterAccountController);
 
 app.use((req, res, next) => {
   res.status(404).json({
