@@ -2,7 +2,7 @@ const express = require("express");
 const Product = require("../models/product.model");
 const router = express.Router();
 
-router.get("/test", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   res.send({ message: "Ok api is working 🚀" });
 });
 
@@ -13,7 +13,7 @@ router.post("/add-product", async (req, res) => {
 });
 
 router.get("/products", async (req, res) => {
-  let products = await Product.find();
+  let products = await Product.find().populate("reviews");
   if (products.length > 0) {
     res.send(products);
   } else {
@@ -27,7 +27,9 @@ router.delete("/product/:id", async (req, res) => {
 });
 
 router.get("/product/:id", async (req, res) => {
-  let result = await Product.findOne({ _id: req.params.id });
+  let result = await Product.findOne({ _id: req.params.id }).populate(
+    "reviews"
+  );
 
   if (result) {
     res.send(result);

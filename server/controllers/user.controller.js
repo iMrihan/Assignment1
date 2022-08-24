@@ -3,10 +3,6 @@ const User = require("../models/user.model");
 
 const router = express.Router();
 
-router.get("/test", async (req, res, next) => {
-  res.send({ message: "Ok api is working 🚀" });
-});
-
 router.post("/register", async (req, res) => {
   let user = new User(req.body);
   let result = await user.save();

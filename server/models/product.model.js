@@ -3,13 +3,22 @@ const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema(
   {
-    name: { type: String, require: true },
-    price: { type: Number, require: true },
+    name: { type: String, required: true },
+    description: { type: String, required: true },
+    price: { type: Number, required: true },
+
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "reviews",
+      },
+    ],
   },
+
   {
     versionKey: false,
     timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Products", productSchema);
+module.exports = mongoose.model("products", productSchema);

@@ -8,19 +8,13 @@ require("dotenv").config();
 const connectDB = require("./configs/db");
 
 const userController = require("./controllers/user.controller");
-const masterAccountController = require("./controllers/masterAccount.controller");
-const savingAccountController = require("./controllers/savingAccount.controller");
-const fixedAccountController = require("./controllers/fixedAccount.controller");
-const branchDetailController = require("./controllers/branchDetail.controller");
+
 const productController = require("./controllers/product.controller");
+const reviewController = require("./controllers/review.controller");
 
-app.use("api/users", userController);
+app.use("/api/users", userController);
 app.use("/api", productController);
-app.use("/branchDetails", branchDetailController);
-app.use("/savingAccounts", savingAccountController);
-app.use("/fixedAccounts", fixedAccountController);
-app.use("/masterAccounts", masterAccountController);
-
+app.use("/api/reviews", reviewController);
 app.use((req, res, next) => {
   res.status(404).json({
     message: "bad request",
