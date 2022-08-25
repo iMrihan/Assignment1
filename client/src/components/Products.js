@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 
@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 const Products = () => {
   const dispatch = useDispatch();
 
-  const products = useSelector((state) => state.cartReducer.products);
+  const products = useSelector((state) => state.data.products);
 
   useEffect(() => {
     get_Data();

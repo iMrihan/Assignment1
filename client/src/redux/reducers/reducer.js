@@ -3,7 +3,7 @@ const INIT_STATE = {
   products: [],
 };
 
-export const cartReducer = (state = INIT_STATE, action) => {
+export const dataReducer = (state = INIT_STATE, action) => {
   switch (action.type) {
     case "GET_DATA":
       return {
@@ -45,9 +45,6 @@ export const cartReducer = (state = INIT_STATE, action) => {
       );
 
       if (state.carts[itemIndex_dec].qnty >= 1) {
-        const dltitems = (state.carts[itemIndex_dec].qnty -= 1);
-        console.log([...state.carts, dltitems]);
-
         return {
           ...state,
           carts: [...state.carts],

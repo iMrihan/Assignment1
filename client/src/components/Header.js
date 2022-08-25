@@ -14,7 +14,7 @@ const Header = () => {
   const [price, setPrice] = useState(0);
   // console.log(price);
 
-  const getData = useSelector((state) => state.cartReducer.carts);
+  const getData = useSelector((state) => state.data.carts);
   // console.log(getData);
 
   const dispatch = useDispatch();
