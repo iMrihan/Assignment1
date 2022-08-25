@@ -8,7 +8,7 @@ import Menu from "@mui/material/Menu";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "react-bootstrap/esm/Table";
-import { DLT } from "../redux/actions/action";
+import { DELETE } from "../redux/actions/action";
 
 const Header = () => {
   const [price, setPrice] = useState(0);
@@ -28,14 +28,14 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const dlt = (id) => {
-    dispatch(DLT(id));
+  const deleteItem = (id) => {
+    dispatch(DELETE(id));
   };
 
   const total = () => {
     let price = 0;
     getData.map((ele, k) => {
-      price = ele.price * ele.qnty + price;
+      price = ele.price * ele.quantity + price;
     });
     setPrice(price);
   };
@@ -88,7 +88,7 @@ const Header = () => {
                 <thead>
                   <tr>
                     <th>Photo</th>
-                    <th>Restaurant Name</th>
+                    <th>Details</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -107,14 +107,14 @@ const Header = () => {
                         <td>
                           <p>{e.name}</p>
                           <p>Price : ₹{e.price}</p>
-                          <p>Quantity : {e.qnty}</p>
+                          <p>Quantity : {e.quantity}</p>
                           <p
                             style={{
                               color: "red",
                               fontSize: 20,
                               cursor: "pointer",
                             }}
-                            onClick={() => dlt(e.id)}
+                            onClick={() => deleteItem(e.id)}
                           >
                             <i className="fas fa-trash smalltrash"></i>
                           </p>
@@ -127,7 +127,7 @@ const Header = () => {
                             fontSize: 20,
                             cursor: "pointer",
                           }}
-                          onClick={() => dlt(e.id)}
+                          onClick={() => deleteItem(e.id)}
                         >
                           <i className="fas fa-trash largetrash"></i>
                         </td>

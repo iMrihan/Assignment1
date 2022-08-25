@@ -7,15 +7,15 @@ export const getData = (payload) => {
 
 export const ADD = (item) => {
   return {
-    type: "ADD_CART",
+    type: "ADD_TO_CART",
     payload: item,
   };
 };
 
 // remove items
-export const DLT = (id) => {
+export const DELETE = (id) => {
   return {
-    type: "RMV_CART",
+    type: "REMOVE_CART",
     payload: id,
   };
 };
@@ -24,7 +24,7 @@ export const DLT = (id) => {
 
 export const REMOVE = (item) => {
   return {
-    type: "RMV_ONE",
+    type: "REMOVE_ONE",
     payload: item,
   };
 };
