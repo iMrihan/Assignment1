@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-
+import { Link } from "react-router-dom";
 import "./style.css";
 import { useDispatch } from "react-redux";
 import { ADD, getData } from "../redux/actions/action";
@@ -19,7 +19,9 @@ const Products = () => {
   }, []);
 
   const get_Data = async () => {
-    const { data } = await axios.get("http://localhost:3005/api/products");
+    const { data } = await axios.get(
+      "https://moneyyapp-assignment1.herokuapp.com/api/products"
+    );
     dispatch(getData(data));
   };
 
@@ -53,6 +55,7 @@ const Products = () => {
                     variant="primary"
                     onClick={() => send(element)}
                     className="col-lg-12"
+                    style={{ marginBottom: "15px" }}
                   >
                     Add to Cart
                   </Button>
